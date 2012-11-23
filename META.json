@@ -1,5 +1,5 @@
 {
-   "abstract" : "Number::Forat plugin for HTML::Template::Compiled",
+   "abstract" : "Number::Format plugin for HTML::Template::Compiled",
    "author" : [
       "Tina Mueller"
    ],
@@ -39,10 +39,10 @@
    "provides" : {
       "HTML::Template::Compiled::Plugin::NumberFormat" : {
          "file" : "lib/HTML/Template/Compiled/Plugin/NumberFormat.pm",
-         "version" : "0.01_001"
+         "version" : "0.02"
       }
    },
-   "release_status" : "testing",
+   "release_status" : "stable",
    "resources" : {
       "license" : [
          "http://dev.perl.org/licenses/"
@@ -51,5 +51,5 @@
          "url" : "https://github.com/perlpunk/HTML-Template-Compiled-Plugin-NumberFormat"
       }
    },
-   "version" : "0.01_001"
+   "version" : "0.02"
 }

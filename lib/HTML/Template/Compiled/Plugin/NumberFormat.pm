@@ -6,7 +6,7 @@ __PACKAGE__->mk_accessors(qw/ formatter /);
 use Number::Format ();
 use HTML::Template::Compiled;
 HTML::Template::Compiled->register(__PACKAGE__);
-our $VERSION = '0.01_001';
+our $VERSION = '0.02';
 
 sub register {
     my ($class) = @_;
@@ -64,26 +64,28 @@ sub _compile_format_number {
     my $type = $attr->{TYPE} || 'number';
     my $method = 'format_number';
     my @args;
+    my $precision = $attr->{PRECISION};
     if (lc $type eq 'number') {
         $method = 'format_number';
-        my $precision = $attr->{PRECISION};
         my $trailing_zeroes = $attr->{TRAILING_ZEROES};
         for ($precision, $trailing_zeroes) {
-            if (defined $_ and length $_) {
-                $_ =~ tr/0-9//cd;
-                $_ ||= 0;
-            }
-            else {
-                $_ = 'undef';
-            }
+            _sanitize($_);
             push @args, $_;
         }
     }
     elsif (lc $type eq 'price') {
+        for ($precision) {
+            _sanitize($_);
+            push @args, $_;
+        }
         $method = 'format_price';
     }
     elsif (lc $type eq 'bytes') {
         $method = 'format_bytes';
+        for ($precision) {
+            _sanitize($_);
+            push @args, ("'precision'" => $_);
+        }
     }
     local $" = ',';
     my $expression = <<"EOM";
@@ -91,17 +93,27 @@ sub _compile_format_number {
 EOM
     return $expression;
 }
+sub _sanitize {
+    if (defined $_[0] and length $_[0]) {
+        $_[0] =~ tr/0-9//cd;
+        $_[0] ||= 0;
+    }
+    else {
+        $_[0] = 'undef';
+    }
+
+}
 
 my $version_pod = <<'=cut';
 =pod
 
 =head1 NAME
 
-HTML::Template::Compiled::Plugin::Nuber::Format - Number::Forat plugin for HTML::Template::Compiled
+HTML::Template::Compiled::Plugin::Nuber::Format - Number::Format plugin for HTML::Template::Compiled
 
 =head1 VERSION
 
-$VERSION = "0.01_001"
+$VERSION = "0.02"
 
 =cut
 
@@ -112,7 +124,6 @@ sub __test_version {
     no warnings;
     return $v eq $v_test ? 1 : 0;
 }
-
 
 1;
 
@@ -184,6 +195,14 @@ calls $number_format->format_bytes
 calls $number_format->format_price
 
 =back
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright (C) 2012 by Tina Mueller
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself, either Perl version 5.8.3 or,
+at your option, any later version of Perl 5 you may have available.
 
 =cut
 

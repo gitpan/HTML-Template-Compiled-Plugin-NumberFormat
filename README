@@ -1,9 +1,9 @@
 NAME
-    HTML::Template::Compiled::Plugin::Nuber::Format - Number::Forat plugin
+    HTML::Template::Compiled::Plugin::Nuber::Format - Number::Format plugin
     for HTML::Template::Compiled
 
 VERSION
-    $VERSION = "0.01_001"
+    $VERSION = "0.02"
 
 SYNOPSIS
         use HTML::Template::Compiled::Plugin::NumberFormat;
@@ -51,4 +51,11 @@ METHODS
 
     format_price
         calls $number_format->format_price
+
+COPYRIGHT AND LICENSE
+    Copyright (C) 2012 by Tina Mueller
+
+    This library is free software; you can redistribute it and/or modify it
+    under the same terms as Perl itself, either Perl version 5.8.3 or, at
+    your option, any later version of Perl 5 you may have available.
 
